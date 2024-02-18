@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>动画文件管理系统</title>
+    <link rel="stylesheet" href="style/style.css">
+</head>
+<body>
+    <h1>动画文件管理系统</h1>
+    <div id="formContainer">
+        <!-- 第一步 -->
+        <div class="step" id="step1">
+            <h2>第一步: 你的名字</h2>
+            <div class="dropdown">
+                <!-- 显示选中的项 -->
+                <div class="dropdown-btn" id="dropdownBtn">
+                    <img src="resources/b.png" alt="选择用户" class="avatar" id="selectedAvatar">
+                    <span id="selectedName">请选择</span>
+                    <div class="arrow-down"></div>
+                </div>
+                <!-- 下拉列表项 -->
+                <div class="dropdown-content" id="dropdownContent">
+                    <div class="dropdown-item" data-value="user1" data-avatar="resources/a.png">
+                        <img src="resources/a.png" alt="千石" class="avatar">
+                        千石
+                    </div>
+                    <div class="dropdown-item" data-value="user2" data-avatar="resources/s.png">
+                        <img src="resources/s.png" alt="雅钦" class="avatar">
+                        雅钦
+                    </div>
+                    <!-- 其他选项 -->
+                </div>
+            </div>
+            <button class="action-btn next-btn">下一步</button>
+        </div>
+        
+        <!-- 第二步 -->
+        <div class="step" id="step2" style="display: none;">
+            <h2>第二步: 你要上传的是</h2>
+            <div class="dropdown">
+                <div class="dropdown-btn" id="dropdownBtnStep2">
+                    <span id="selectedOptionStep2">请选择</span>
+                    <div class="arrow-down"></div>
+                </div>
+                <div class="dropdown-content" id="dropdownContentStep2">
+                    <!-- 在这里添加第二步的选项 -->
+                    <div class="dropdown-item">LO(第一原画)</div>
+                    <div class="dropdown-item">第二原画</div>
+                    <div class="dropdown-item">动画</div>
+                    <div class="dropdown-item">美术</div>
+                    <div class="dropdown-item">上色</div>
+                    <div class="dropdown-item">摄影</div>
+                    <!-- 其他选项 -->
+                </div>
+            </div>
+            <div class="button-contianer">
+                <button class="action-btn prev-btn">上一步</button>
+                <button class="action-btn next-btn">下一步</button>
+            </div>
+        </div>
+        
+        <!-- 如果有第三步及更多步骤，继续添加在这里 -->
+    </div>
+
+<script src="script/script.js"></script>
+</body>
+</html>

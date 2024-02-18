@@ -1,0 +1,29 @@
+QMainWindow {
+    background-color: #f0f0f0;
+}
+QTreeWidget {
+    border: 1px solid #dcdcdc;
+    border-radius: 5px;
+    show-decoration-selected: 1; /* 确保选择装饰在所有模式下都显示 */
+}
+QTreeWidget::item {
+    padding: 2px;
+    transition: background-color 0.2s, color 0.2s; /* 平滑过渡动画 */
+}
+QTreeWidget::item:hover {
+    background-color: #e0e0e0; /* 鼠标悬停时的背景色 */
+}
+QTreeWidget::item:selected {
+    background-color: #0078d7; /* 选中项的背景色（蓝色） */
+    color: white;
+}
+QPushButton {
+    background-color: #a3b442;
+    border-radius: 5px;
+    padding: 6px;
+    color: white;
+    font-weight: bold;
+}
+QPushButton:hover {
+    background-color: #8f9b3b;
+}
