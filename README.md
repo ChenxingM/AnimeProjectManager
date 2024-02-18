@@ -22,7 +22,7 @@ Pythonで書かれたローカルファイル管理ソフトウェアをシス�
 [主界面](https://github.com/ChenxingM/AnimeProjectManager/blob/main/97_scs/main_window.png "主界面")
 * ローカルファイル管理ソフトメインウィンド *
 
-[LarkPC端界面]([LarkPC端界面](https://github.com/ChenxingM/AnimeProjectManager/blob/main/97_scs/lark_pc.png "LarkPC端界面") "LarkPC端界面")
+[LarkPC端界面](https://github.com/ChenxingM/AnimeProjectManager/blob/main/97_scs/lark_pc.png "LarkPC端界面")
 * Lark 収集表PC画面 *
 
 
