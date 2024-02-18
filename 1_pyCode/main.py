@@ -50,7 +50,6 @@ class rightClickMenu(QTreeWidget):
                 os.startfile(os.path.dirname(file_path))
             elif sys.platform == 'darwin':  # macOS
                 subprocess.Popen(['open', '--', os.path.dirname(file_path)])
-            # Linux 或其他平台的逻辑可以在这里添加
 
     def previewFile(self):
         selected_item = self.currentItem()
@@ -60,9 +59,8 @@ class rightClickMenu(QTreeWidget):
                 os.startfile(file_path)
             elif sys.platform == 'darwin':  # macOS
                 subprocess.Popen(['open', file_path])
-            # Linux 或其他平台的逻辑可以在这里添加
 
-class FileExplorer(QWidget):  # 改为继承自 QWidget
+class FileExplorer(QWidget):
     def __init__(self):
         super().__init__()
         self.isTreeExpanded = False
@@ -70,44 +68,37 @@ class FileExplorer(QWidget):  # 改为继承自 QWidget
 
     def initUI(self):
         # 主垂直布局
-        mainLayout = QVBoxLayout(self)  # 使用 self 作为布局的父部件
+        mainLayout = QVBoxLayout(self)
 
         # 创建树状视图
         self.treeWidget = rightClickMenu()
         self.treeWidget.setHeaderLabels(["文件名", "在动画中", "类型", "修改日期", "创建日期"])
-        self.treeWidget.setColumnWidth(0, 200) # 设置第一列的宽度
+        self.treeWidget.setColumnWidth(0, 200)
         self.treeWidget.setMinimumHeight(300)
         self.treeWidget.setMinimumWidth(500)
         mainLayout.addWidget(self.treeWidget)
 
 
-        # 创建水平布局来放置按钮
         buttonLayout = QHBoxLayout()
 
-        # 创建打开文件夹的按钮并添加到水平布局
         self.openFolderBtn = QPushButton("打开文件夹")
         self.openFolderBtn.clicked.connect(self.openFolderDialog)
         buttonLayout.addWidget(self.openFolderBtn)
 
-        # 创建切换树状视图展开/折叠的按钮并添加到水平布局
         self.toggleTreeViewBtn = QPushButton("展开/折叠")
         self.toggleTreeViewBtn.clicked.connect(self.toggleTreeView)
         buttonLayout.addWidget(self.toggleTreeViewBtn)
 
-        # 创建“打开文件位置”的按钮并添加到水平布局
         self.openLocationBtn = QPushButton("打开文件位置")
         self.openLocationBtn.clicked.connect(self.openSelectedFileLocation)
         buttonLayout.addWidget(self.openLocationBtn)
 
-        # 将按钮的水平布局添加到主垂直布局
         mainLayout.addLayout(buttonLayout)
 
-        # 创建搜索栏
         self.searchBar = QLineEdit(self)
         self.searchBar.setPlaceholderText("搜索...")
         self.searchBar.textChanged.connect(self.onSearchTextChanged)
 
-        # 创建下拉菜单用于选择搜索类型
         self.searchTypeComboBox = QComboBox(self)
         self.searchTypeComboBox.addItems(["按名称", "按类型", "按动画工程"])
 
@@ -115,7 +106,6 @@ class FileExplorer(QWidget):  # 改为继承自 QWidget
         self.matchTypeComboBox.addItems(["全部匹配", "部分匹配"])
         self.matchTypeComboBox.currentIndexChanged.connect(self.onSearchTextChanged)  # 当选择改变时更新搜索
 
-        # 将搜索栏和下拉菜单添加到布局中
         searchLayout = QHBoxLayout()
         searchLayout.addWidget(self.searchBar)
         searchLayout.addWidget(self.searchTypeComboBox)
@@ -140,16 +130,15 @@ class FileExplorer(QWidget):  # 改为继承自 QWidget
             if name == 'Thumbs.db' or name == '.DS_Store':
                 continue  # 跳过这些文件
 
-            filePath = os.path.join(path, name)  # 先定义filePath
+            filePath = os.path.join(path, name)
 
             if os.path.islink(filePath) or filePath.endswith('.fcpbundle'):
-                # 处理符号链接或特定文件，例如添加到树视图但不递归
                 fileItem = QTreeWidgetItem(parentItem, [name, "", "FCPX工程", "", ""])
-                continue  # 跳过后续的递归处理
+                continue
 
             if os.path.isdir(filePath):
                 dirItem = QTreeWidgetItem(parentItem, [name])
-                dirItem.setData(0, Qt.UserRole, filePath)  # 存储完整路径
+                dirItem.setData(0, Qt.UserRole, filePath)
                 self.addTreeItems(dirItem, filePath)
             else:
                 fileType = self.getFileTags(name)
@@ -157,7 +146,7 @@ class FileExplorer(QWidget):  # 改为继承自 QWidget
                 modified = datetime.fromtimestamp(os.path.getmtime(filePath)).strftime('%Y-%m-%d %H:%M:%S')
                 created = datetime.fromtimestamp(os.path.getctime(filePath)).strftime('%Y-%m-%d %H:%M:%S')
                 fileItem = QTreeWidgetItem(parentItem, [name, inAnimation, fileType, modified, created])
-                fileItem.setData(0, Qt.UserRole, filePath)  # 同样存储文件的完整路径
+                fileItem.setData(0, Qt.UserRole, filePath)
 
     def onSearchTextChanged(self, _):
         text = self.searchBar.text()
@@ -169,7 +158,7 @@ class FileExplorer(QWidget):  # 改为继承自 QWidget
         iterator = QTreeWidgetItemIterator(self.treeWidget)
         while iterator.value():
             item = iterator.value()
-            item_full_text = item.text(0)  # 获取完整的文件名
+            item_full_text = item.text(0)
             _, item_extension = os.path.splitext(item_full_text)  # 分离扩展名
 
             if search_type == "按名称":
@@ -316,7 +305,7 @@ def process_2gen_douga_step(cut_folder_path, upload_folder_path, key, value, tit
             current_running_folder.append(target_folder_path)
 
 def douga_2gen_folder(cut_folder_path, base_folder_name, value):
-    # 定义lo步骤的顺序
+    # 定义步骤的顺序
     lo_step_order = ['lo', 'en', 'ks', 's', '2gen', 'douga']
 
     # 初始化返回值
@@ -326,23 +315,23 @@ def douga_2gen_folder(cut_folder_path, base_folder_name, value):
     existing_folders = [folder for folder in os.listdir(cut_folder_path) if folder.startswith(base_folder_name)]
     for folder in existing_folders:
         folder_path = os.path.join(cut_folder_path, folder)
-        # 分解文件夹名以获取当前lo步骤
+        # 分解文件夹名 获取当前步骤
         parts = folder.split('_')
-        current_lo_steps = parts[3:]  # 假设lo步骤总是跟在cutNo之后
+        current_lo_steps = parts[3:]
 
-        # 如果当前文件夹已经包含value['loStep']，直接返回当前文件夹路径，不重命名
+        # 如果当前文件夹已经包含value['currentStep']，直接返回当前文件夹路径，不重命名
         if value['currentStep'] in current_lo_steps:
             update_info(f"文件夹 {folder} 已经含有 '{value['currentStep']}'步骤, 无需改变，仅替换新文件.")
             target_folder_path = folder_path
             folder_name = os.path.basename(folder_path)
             break  # 跳出循环
 
-        # 检查是否可以添加新的loStep
+        # 检查是否可以添加新的currentStep
         if value['currentStep'] in lo_step_order:
             new_lo_step_index = lo_step_order.index(value['currentStep'])
 
             if current_lo_steps:
-                # 检查新的loStep是否顺序正确
+                # currentStep是否顺序正确
                 last_lo_step_index = max(
                     (lo_step_order.index(step) for step in current_lo_steps if step in lo_step_order), default=-1)
                 if new_lo_step_index <= last_lo_step_index:
@@ -373,7 +362,6 @@ def douga_2gen_folder(cut_folder_path, base_folder_name, value):
                 folder_name = os.path.basename(folder_path)
                 break  # 跳出循环
 
-    # 确保返回文件夹的完整路径和基本名称
     return target_folder_path, folder_name
 
 def douga_2gen_files(file_path, target_folder, file_name, folder_name, cut_no, current_step):
@@ -535,7 +523,7 @@ def lo_folder(cut_folder_path, base_folder_name, value):
         print(folder_path)
         # 分解文件夹名以获取当前lo步骤
         parts = folder.split('_')
-        current_lo_steps = parts[3:]  # 假设lo步骤总是跟在cutNo之后
+        current_lo_steps = parts[3:]
 
         # 如果当前文件夹已经包含value['loStep']，直接返回当前文件夹路径，不重命名
         print(value['loStep'])
@@ -615,7 +603,6 @@ def generate_xml_files(data, title, conte_dict):
             actionsText = "，".join(actionsText)
             dialogText = "，".join(dialogText)
         else:
-            # 同样提取数字并转换为整数
             cut_number = int(''.join(filter(str.isdigit, value['cutNo'])))
             totalFramesText = ",".join(
                 map(str, conte_dict[cut_number]['cutTotalFrames'])) if cut_number in conte_dict else "None"
@@ -626,14 +613,13 @@ def generate_xml_files(data, title, conte_dict):
         project.append(ET.Comment('作品名'))
         ET.SubElement(project, "title").text = title
         project.append(ET.Comment('PART'))
-        ET.SubElement(project, "part").text = "A"  # 静态内容
+        ET.SubElement(project, "part").text = "A"
         project.append(ET.Comment('场景'))
-        ET.SubElement(project, "scene").text = "1"  # 静态内容
+        ET.SubElement(project, "scene").text = "1"
         project.append(ET.Comment('卡号'))
         ET.SubElement(project, "cut").text = value['cutNo']
         project.append(ET.Comment('兼用卡'))
         ET.SubElement(project, "combined").text = str(value['combinedCut']).lower()
-        # 添加时间结构
         project.append(ET.Comment('时间'))
         time_element = ET.SubElement(project, "time")
         ET.SubElement(time_element, "totalFrames").text = totalFramesText
@@ -660,9 +646,9 @@ def generate_xml_files(data, title, conte_dict):
         project.append(ET.Comment('路径'))
         paths = ET.SubElement(project, "paths")
         paths.append(ET.Comment('CSP文件路径'))
-        ET.SubElement(paths, "cspPath").text = os.path.join(cut_folder, "_clip", f"{base_name}.clip")  # 示例路径
+        ET.SubElement(paths, "cspPath").text = os.path.join(cut_folder, "_clip", f"{base_name}.clip")
         paths.append(ET.Comment('背景文件路径'))
-        ET.SubElement(paths, "bgPath").text = os.path.join(cut_folder, "_bg", f"{base_name}_bg.psd")   # 示例路径
+        ET.SubElement(paths, "bgPath").text = os.path.join(cut_folder, "_bg", f"{base_name}_bg.psd")
         paths.append(ET.Comment('分镜图像'))
         ET.SubElement(paths, "conteImage").text = os.path.join(cut_folder, "_conte",
                                                                  f"{title}_{value['cutNo']}_conte.jpg")
@@ -688,7 +674,7 @@ def generate_xml_files(data, title, conte_dict):
         for role, elem_name in zip(roles, role_elements):
             # 直接在需要添加子元素前添加注释
             comment_text = role_dict.get(elem_name, "未知角色")
-            people.append(ET.Comment(comment_text))  # 直接添加注释到people下
+            people.append(ET.Comment(comment_text))
 
             person_element = ET.SubElement(people, elem_name)
             if value['loStep'] == role or (value['currentStep'] == role and value['loStep'] == "notLO"):
@@ -746,10 +732,8 @@ def process_submitt_csv():
     else:
         file_path = default_file_path
         upload_folder_path = default_upload_folder_path
-    # 使用chardet检测文件编码
-    encoding = detect_encoding(file_path)
 
-    # 使用检测到的编码读取CSV文件
+    encoding = detect_encoding(file_path)
     df = pd.read_csv(file_path, encoding=encoding)
 
     step_dict = {
@@ -773,7 +757,7 @@ def process_submitt_csv():
     # 遍历数据框，处理并存储每一行的内容
     for index, row in df.iterrows():
         formatted_cut_no, combined_use = format_cut_no(row['你要对哪一卡做出更改？'])
-        current_step = step_dict.get(row['你要提交的是？'], 'unknown')  # 使用get方法以防止键不存在
+        current_step = step_dict.get(row['你要提交的是？'], 'unknown')
         action = "new" if row['你要对这一卡做什么？'] == '提交全新的' else (
             "ver" if row['你要对这一卡做什么？'] == '上传其他版本' else "overwrite")
         lo_step = lo_step_dict.get(row.get('如果你选择了LO（第一原画）\n你提交的是哪一个步骤？', 'notLO'), 'notLO')
@@ -811,14 +795,14 @@ def on_cut_button_clicked():
     #global fileExplorer
     labels = ["PART:", "场景:", "卡号:", "时长:", "当前工程:", "现在情况？", "CSP文件名:", "上交时间:", "背景文件名:"]
     # 获取用户在卡号输入框中输入的卡号
-    cut_no_input = input_widgets["卡号:"].text()  # 假设cut_no_input_widget是卡号输入框的变量
-    formatted_cut_no, _ = format_cut_no(cut_no_input)  # 使用format_cut_no函数格式化卡号
+    cut_no_input = input_widgets["卡号:"].text()
+    formatted_cut_no, _ = format_cut_no(cut_no_input)
 
-    # 在cut_folder_path指定的目录中寻找包含formatted_cut_no的文件夹
+    # 在cut_folder_path中寻找包含formatted_cut_no的文件夹
     target_folder = None
     for folder in os.listdir(cut_folder_path):
         if formatted_cut_no in folder:
-            # 进一步确认文件夹名是否符合期望的模式（例如，包含'_info'）
+            # 确认文件夹名是否符合期望的模式
             fileExplorer.populateTree(os.path.join(cut_folder_path, folder))
             fileExplorer.treeWidget.expandAll()
             info_path = os.path.join(cut_folder_path, folder, "_info")
@@ -854,14 +838,14 @@ def on_cut_button_clicked():
             }
 
             def get_setps(cut_folder):
-                # 使用正则表达式匹配所有可能的后缀
+                # 匹配的后缀
                 pattern = re.compile(r'_(lo|ks|en|s|2gen|douga)')
                 matches = pattern.findall(cut_folder)
 
                 # 转换匹配的后缀为对应的文本
                 texts = [suffix_to_text[suffix] for suffix in matches if suffix in suffix_to_text]
 
-                # 用右箭头连接转换后的文本
+                # 连接流程
                 result_text = " → ".join(texts)
 
                 return result_text
@@ -898,11 +882,11 @@ def on_update_button_clicked():
         cut_no_input = input_widgets["卡号:"].text()
         formatted_cut_no, _ = format_cut_no(cut_no_input)
 
-        # 在cut_folder_path指定的目录中寻找包含formatted_cut_no的文件夹
+        # 在cut_folder_path中寻找包含formatted_cut_no的文件夹
         target_folder = None
         for folder in os.listdir(cut_folder_path):
             if formatted_cut_no in folder:
-                # 进一步确认文件夹名是否符合期望的模式（例如，包含'_info'）
+                # 进一步确认文件夹名是否符合期望的模式
                 info_path = os.path.join(cut_folder_path, folder, "_info")
                 if os.path.exists(info_path):
                     target_folder = info_path
@@ -958,7 +942,7 @@ app = QApplication(sys.argv)
 window = QWidget()
 window.setWindowTitle("动画文件管理系统")
 
-# 主布局，采用水平布局来分割左右两部分
+# 主布局
 main_layout = QHBoxLayout(window)
 
 # 左侧布局
@@ -1021,19 +1005,16 @@ buttons_layout.addWidget(csv_button)
 buttons_layout.addWidget(cut_button)
 buttons_layout.addWidget(submit_button)
 
-# 连接按钮的点击信号到打开CSV文件的函数
+
 csv_button.clicked.connect(lambda :process_submitt_csv())
-# 将cut_button的clicked信号连接到on_cut_button_clicked函数
 cut_button.clicked.connect(on_cut_button_clicked)
 submit_button.clicked.connect(on_update_button_clicked)
 
-
-# 将表单布局和按钮布局添加到左侧布局
 left_layout = QVBoxLayout()
 left_layout.addLayout(form_layout)
 left_layout.addLayout(buttons_layout)
 
-# 创建右侧的QTreeView
+# QTreeView
 fileExplorer = FileExplorer()
 right_layout.addWidget(fileExplorer)
 
@@ -1054,7 +1035,6 @@ class FileDropLineEdit(QLineEdit):
         if urls:  # 如果存在URL
             self.draggedFilePath = urls[0].toLocalFile()  # 获取第一个URL的本地文件路径
             self.setText(self.draggedFilePath)  # 显示文件路径
-            # 这里你可以添加额外的处理逻辑，比如使用这个路径进行其他操作
 
 
 # 调试标签和输入框
@@ -1073,18 +1053,15 @@ right_layout.addLayout(csv_layout)
 debug_text_edit.setMinimumHeight(200)
 
 
-# 将左侧布局和右侧布局添加到主布局
 horizontal_layout = QHBoxLayout()
 horizontal_layout.addLayout(left_layout)
 horizontal_layout.addLayout(right_layout)
 
-# 创建一个新的水平布局，用于放置在整体下方
+
 conte_layout = QVBoxLayout()
 
-# 在这个新的水平布局中添加控件，例如一个标签和两个文本输入框
 imageLabel = QLabel("分镜预览")
-pixmap = QPixmap("/Users/chenxing/Documents/5_AnimeProjectManager/2_footage/placeholder.png")  # 替换为你的图像文件路径
-# 设置 QPixmap 到 QLabel，并保持图像的宽高比
+pixmap = QPixmap("/Users/chenxing/Documents/5_AnimeProjectManager/2_footage/placeholder.png")
 imageLabel.setPixmap(pixmap.scaled(300, 300, Qt.KeepAspectRatio, Qt.SmoothTransformation))
 actionsLabel = QLabel("内容")
 actionsInput = QTextEdit("内容")
@@ -1092,7 +1069,6 @@ dialogLabel = QLabel("台词")
 dialogInput = QTextEdit("台词")
 
 
-# 将控件添加到新布局中
 conte_layout.addWidget(imageLabel)
 conte_layout.addWidget(actionsLabel)
 conte_layout.addWidget(actionsInput)
@@ -1100,16 +1076,12 @@ conte_layout.addWidget(dialogLabel)
 conte_layout.addWidget(dialogInput)
 imageLabel.setMinimumWidth(300)
 
-
-
-# 将新的水平布局添加到主布局的底部
 main_layout.addLayout(horizontal_layout)
 main_layout.addLayout(conte_layout)
 
-# 将主布局设置到窗口
 window.setLayout(main_layout)
 
-# 使用QSS样式化小部件
+# QSS样式
 window.setStyleSheet("""
     QWidget {
         font-size: 14px;
