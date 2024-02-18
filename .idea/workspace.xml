@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5596b881-618e-4ba3-bc26-a0718f157666" name="Changes" comment="File Viewer Created" />
+    <list default="true" id="5596b881-618e-4ba3-bc26-a0718f157666" name="Changes" comment="File Viewer Created">
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README_zh.md" beforeDir="false" afterPath="$PROJECT_DIR$/README_zh.md" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -29,7 +32,7 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/98_versionControls" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/1_pyCode/loacalFileManager.py" root0="SKIP_INSPECTION" />
@@ -125,7 +128,7 @@
       <workItem from="1706437967357" duration="606000" />
       <workItem from="1707144061021" duration="597000" />
       <workItem from="1707394061757" duration="54000" />
-      <workItem from="1708060973983" duration="68471000" />
+      <workItem from="1708060973983" duration="68957000" />
     </task>
     <servers />
   </component>

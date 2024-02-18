@@ -20,10 +20,10 @@ Pythonで書かれたローカルファイル管理ソフトウェアをシス�
 - **絵コンテ情報読み取りと可視化ツール：** ローカルファイル管理ソフトウェアを使用し、収集表と絵コンテ情報を読み取り、ファイル管理を自動化し、グラフィカルユーザーインターフェースで視覚的に表示します。
 
 [主界面](https://github.com/ChenxingM/AnimeProjectManager/blob/main/97_scs/main_window.png "主界面")
-* ローカルファイル管理ソフトメインウィンド *
+*ローカルファイル管理ソフトメインウィンド*
 
 [LarkPC端界面](https://github.com/ChenxingM/AnimeProjectManager/blob/main/97_scs/lark_pc.png "LarkPC端界面")
-* Lark 収集表PC画面 *
+*Lark 収集表PC画面*
 
 
 ## 適用場面
