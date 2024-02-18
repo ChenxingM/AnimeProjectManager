@@ -19,10 +19,10 @@ Pythonで書かれたローカルファイル管理ソフトウェアをシス�
 - **アニメファイル提出システム（納品システム）：** Larkの収集表を使用し、Larkの自動化と組み合わせて、人の手を借りずに進行管理を実現します。
 - **絵コンテ情報読み取りと可視化ツール：** ローカルファイル管理ソフトウェアを使用し、収集表と絵コンテ情報を読み取り、ファイル管理を自動化し、グラフィカルユーザーインターフェースで視覚的に表示します。
 
-[主界面](97_scs/main_window.png "主界面")
+[主界面](https://github.com/ChenxingM/AnimeProjectManager/blob/main/97_scs/main_window.png "主界面")
 * ローカルファイル管理ソフトメインウィンド *
 
-[LarkPC端界面](97_scs/lark_pc.png "LarkPC端界面")
+[LarkPC端界面]([LarkPC端界面](https://github.com/ChenxingM/AnimeProjectManager/blob/main/97_scs/lark_pc.png "LarkPC端界面") "LarkPC端界面")
 * Lark 収集表PC画面 *
 
 

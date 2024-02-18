@@ -19,10 +19,10 @@
 - **动画文件提交系统：** 飞书收集表，配合飞书自动化实现无需人为操作的进度管理
 - **分镜信息读取与可视化工具：** 本地文件管理软件，读取收集表和分镜信息，自动化文件管理，通过图形用户界面可视化展示
 
-[主界面](97_scs/main_window.png "主界面")
+[主界面](https://github.com/ChenxingM/AnimeProjectManager/blob/main/97_scs/main_window.png "主界面")
 * 本地管理软件主界面 *
 
-[LarkPC端界面](97_scs/lark_pc.png "LarkPC端界面")
+[LarkPC端界面](https://github.com/ChenxingM/AnimeProjectManager/blob/main/97_scs/lark_pc.png "LarkPC端界面")
 * LarkPC端界面 *
 
 ## 使用场景
