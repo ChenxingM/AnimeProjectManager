@@ -11,24 +11,24 @@ from datetime import datetime
 from PySide6.QtWidgets import (QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLineEdit, QLabel,
                                QPushButton, QTextEdit, QComboBox, QTreeView, QFileDialog, QTreeWidgetItem, QTreeWidget, QTreeWidgetItemIterator, QMessageBox, QMenu)
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QPixmap,QDragEnterEvent, QDropEvent
+from PySide6.QtGui import QPixmap, QDragEnterEvent, QDropEvent,QFont
 import xml.etree.ElementTree as ET
 from xml.dom import minidom
 
-title = "AKM"
-default_file_path = "/Users/chenxing/Documents/5_AnimeProjectManager/1_pyCode/進捗整理_納品管理_收集结果.csv"
-cut_folder_path = "/Users/chenxing/Documents/卒制/0_CutFolder"
-default_upload_folder_path = "/Users/chenxing/Documents/5_AnimeProjectManager/1_pyCode/進捗整理-收集表-收集结果_附件"
-conte_csv = "/Users/chenxing/Documents/5_AnimeProjectManager/1_pyCode/output.csv"
-xml_path = []
-input_widgets = {}
-current_running_folder = []
+title: str = "AKM"
+default_file_path: str = "/Users/chenxing/Documents/5_AnimeProjectManager/1_pyCode/進捗整理_納品管理_收集结果.csv"
+cut_folder_path: str = "/Users/chenxing/Documents/卒制/0_CutFolder"
+default_upload_folder_path: str = "/Users/chenxing/Documents/5_AnimeProjectManager/1_pyCode/進捗整理-收集表-收集结果_附件"
+conte_csv: str = "/Users/chenxing/Documents/5_AnimeProjectManager/1_pyCode/output.csv"
+xml_path: list[str] = []
+input_widgets: dict = {}
+current_running_folder: list[str] = []
 
 class rightClickMenu(QTreeWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
 
-    def contextMenuEvent(self, event):
+    def contextMenuEvent(self, event) -> None:
         print("contextMenuEvent")
         contextMenu = QMenu(self)
 
@@ -42,7 +42,7 @@ class rightClickMenu(QTreeWidget):
         elif action == previewFileAction:
             self.previewFile()
 
-    def openFileLocation(self):
+    def openFileLocation(self) -> None:
         selected_item = self.currentItem()
         if selected_item:
             file_path = selected_item.text(0)
@@ -51,7 +51,7 @@ class rightClickMenu(QTreeWidget):
             elif sys.platform == 'darwin':  # macOS
                 subprocess.Popen(['open', '--', os.path.dirname(file_path)])
 
-    def previewFile(self):
+    def previewFile(self) -> None:
         selected_item = self.currentItem()
         if selected_item:
             file_path = selected_item.text(0)
@@ -113,19 +113,19 @@ class FileExplorer(QWidget):
         mainLayout.insertLayout(0, searchLayout)  # 在布局的顶部添加
 
 
-    def openFolderDialog(self):
+    def openFolderDialog(self) -> None:
         folderPath = QFileDialog.getExistingDirectory(self, "选择文件夹")
         if folderPath:
             self.populateTree(folderPath)
 
 
-    def populateTree(self, folderPath):
+    def populateTree(self, folderPath) -> None:
         self.treeWidget.clear()
         root = QTreeWidgetItem(self.treeWidget, [os.path.basename(folderPath)])
         root.setData(0, Qt.UserRole, folderPath)  # 存储根文件夹的路径
         self.addTreeItems(root, folderPath)
 
-    def addTreeItems(self, parentItem, path):
+    def addTreeItems(self, parentItem, path) -> None:
         for name in os.listdir(path):
             if name == 'Thumbs.db' or name == '.DS_Store':
                 continue  # 跳过这些文件
@@ -241,14 +241,14 @@ class FileExplorer(QWidget):
         return extension_map.get(ext, "其他")
 
 
-def update_info(text):
+def update_info(text: str):
     current_time = datetime.now().strftime("[%Y-%m-%d %H:%M:%S]")
     current_text = debug_text_edit.toPlainText()
     new_message = f"{current_time} {text}\n"
     updated_text = current_text + new_message
     debug_text_edit.setPlainText(updated_text)
 
-def detect_encoding(file_path):
+def detect_encoding(file_path: str) -> str:
     with open(file_path, 'rb') as f:
         result = chardet.detect(f.read())
     return result['encoding']
@@ -335,7 +335,7 @@ def douga_2gen_folder(cut_folder_path, base_folder_name, value):
                 last_lo_step_index = max(
                     (lo_step_order.index(step) for step in current_lo_steps if step in lo_step_order), default=-1)
                 if new_lo_step_index <= last_lo_step_index:
-                    update_info(f"无法将 {folder} 添加 '{value['currentStep']}'步骤，违反了工程顺序.")
+                    update_info(f"[错误] 无法将 {folder} 添加 '{value['currentStep']}'步骤，违反了工程顺序.")
                     raise ValueError(
                         f"无法将 {folder} 添加 '{value['currentStep']}'步骤，违反了工程顺序.")
                 # 生成新的文件夹名
@@ -356,7 +356,7 @@ def douga_2gen_folder(cut_folder_path, base_folder_name, value):
                     update_info(f"创建文件夹 {new_folder_path}/_genga")
                 break  # 成功重命名后跳出循环
             except Exception as e:
-                update_info(f"重命名 {folder} 到 {new_folder_name}发生错误: {e}")
+                update_info(f"[错误] 重命名 {folder} 到 {new_folder_name}发生错误: {e}")
                 # 如果重命名失败，使用原始路径和名称
                 target_folder_path = folder_path
                 folder_name = os.path.basename(folder_path)
@@ -542,7 +542,7 @@ def lo_folder(cut_folder_path, base_folder_name, value):
                 last_lo_step_index = max(
                     (lo_step_order.index(step) for step in current_lo_steps if step in lo_step_order), default=-1)
                 if new_lo_step_index <= last_lo_step_index:
-                    update_info(f"无法将 {folder} 添加 '{value['loStep']}'步骤，违反了工程顺序.")
+                    update_info(f"[错误] 无法将 {folder} 添加 '{value['loStep']}'步骤，违反了工程顺序.")
                     raise ValueError(
                         f"无法将 {folder} 添加 '{value['loStep']}'步骤，违反了工程顺序.")
                 # 生成新的文件夹名
@@ -634,12 +634,11 @@ def generate_xml_files(data, title, conte_dict):
         project.append(ET.Comment('开始日期'))
         ET.SubElement(project, "startDate").text = value['inDate']
         project.append(ET.Comment('分镜内容'))
-        ET.SubElement(project, "conteActions").text = actionsText # 静态内容
+        ET.SubElement(project, "conteActions").text = actionsText
         project.append(ET.Comment('台词'))
-        ET.SubElement(project, "dialog").text = dialogText  # 静态内容
+        ET.SubElement(project, "dialog").text = dialogText
         project.append(ET.Comment('注释'))
         ET.SubElement(project, "notes").text = value['msg']
-
 
         # 路径节点
         base_name = os.path.basename(cut_folder)
@@ -696,7 +695,7 @@ def generate_xml_files(data, title, conte_dict):
             update_info(f"成功创建/更新卡信息 {file_name}")
 
         except ValueError as e:
-            update_info(e)
+            update_info(f'[错误] {e}')
 
 
 def get_conte(conte_csv):
@@ -796,12 +795,13 @@ def on_cut_button_clicked():
     labels = ["PART:", "场景:", "卡号:", "时长:", "当前工程:", "现在情况？", "CSP文件名:", "上交时间:", "背景文件名:"]
     # 获取用户在卡号输入框中输入的卡号
     cut_no_input = input_widgets["卡号:"].text()
+    un_formatted_cut_no = cut_no_input
     formatted_cut_no, _ = format_cut_no(cut_no_input)
 
     # 在cut_folder_path中寻找包含formatted_cut_no的文件夹
     target_folder = None
     for folder in os.listdir(cut_folder_path):
-        if formatted_cut_no in folder:
+        if formatted_cut_no in folder or un_formatted_cut_no in folder:
             # 确认文件夹名是否符合期望的模式
             fileExplorer.populateTree(os.path.join(cut_folder_path, folder))
             fileExplorer.treeWidget.expandAll()
@@ -809,6 +809,11 @@ def on_cut_button_clicked():
             if os.path.exists(info_path):
                 target_folder = info_path
                 break
+    # 如果un_formatted_cut_no不是数字 则报错
+    if not un_formatted_cut_no.isdigit():
+        update_info(f"[错误] 输入的卡号 {un_formatted_cut_no} 不是数字")
+        return
+
 
     if target_folder:
         # 在目标_info文件夹中寻找XML文件
@@ -873,7 +878,7 @@ def on_cut_button_clicked():
         else:
             update_info("未找到对应的XML文件")
     else:
-        update_info(f"未找到包含指定卡号{formatted_cut_no}的文件夹")
+        update_info(f"[提示] 未找到包含指定卡号{formatted_cut_no}的文件夹")
 
 def on_update_button_clicked():
     # 弹出提示框，确认是否更新
@@ -917,7 +922,7 @@ def on_update_button_clicked():
                     update_info(f"分镜内容从 {root.find('conteActions').text} 更新为 {actionsInput.toPlainText()}")
                 if root.find('dialog').text != dialogInput.toPlainText():
                     update_info(f"台词从 {root.find('dialog').text} 更新为 {dialogInput.toPlainText()}")
-                #更新XML文件中的内容
+                # 更新XML文件中的内容
                 root.find('currentStatus').text = input_widgets["现在情况？"].text()
                 root.find('notes').text = comment_text_edit.toPlainText()
                 root.find('conteActions').text = actionsInput.toPlainText()
@@ -937,6 +942,12 @@ def on_update_button_clicked():
 
 # 创建主应用程序
 app = QApplication(sys.argv)
+
+font = QFont()
+font.setFamily("Source Han Mono")
+font.setBold(True)
+font.setPointSize(12)
+app.setFont(font)
 
 # 创建主窗口
 window = QWidget()
@@ -959,15 +970,15 @@ form_layout.addWidget(title_label)
 
 # 添加输入字段及其标签
 # 定义标签和对应XML元素的映射
-labels_to_xml = {
+labels_to_xml : list = {
     "PART:": "part",
     "场景:": "scene",
     "卡号:": "cut",
-    "时长:": "totalFrames",  # 假设XML中没有直接对应的元素
+    "时长:": "totalFrames",
     "当前工程:": "currentStep",
     "现在情况？": "currentStatus",
-    "CSP文件名:": None,  # 由于路径可能需要特殊处理，这里暂时设置为None
-    "背景文件名:": None,  # 同上
+    "CSP文件名:": None,
+    "背景文件名:": None,
     "上交时间:": "upDate"
 }
 
@@ -1010,7 +1021,6 @@ csv_button.clicked.connect(lambda :process_submitt_csv())
 cut_button.clicked.connect(on_cut_button_clicked)
 submit_button.clicked.connect(on_update_button_clicked)
 
-left_layout = QVBoxLayout()
 left_layout.addLayout(form_layout)
 left_layout.addLayout(buttons_layout)
 
@@ -1108,7 +1118,7 @@ window.setStyleSheet("""
         border-bottom-right-radius: 3px;
     }
     QComboBox::down-arrow {
-        image: url('/Users/chenxing/Documents/5_AnimeProjectManager/2_footage/arrowtriangle.down.fill.png'); /* 你需要提供一个实际的图标路径 */
+        image: url('/Users/chenxing/Documents/5_AnimeProjectManager/2_footage/arrowtriangle.down.fill.png');
         
     }
     QComboBox QAbstractItemView {
